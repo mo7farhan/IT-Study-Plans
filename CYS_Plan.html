@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الخطة الشجرية التفاعلية لتخصص الأمن السيبراني</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f1f1;--panel:#fff;--ink:#2b1519;--mut:#6d5a5e;--acc:#c42a4a;--ok:#1a7f45;--el:#8a4b4d;--lk:#ebe6e7;--lki:#857b7e;--lkb:#cbc2c4;--line:#cf8fa0;--rule:#e0d5d7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#171114;--panel:#211a1d;--ink:#f4eaec;--mut:#b9a8ac;--acc:#d6405f;--ok:#2a9d5c;--el:#9b5659;--lk:#2a2225;--lki:#8f8286;--lkb:#4a3f42;--line:#a35a6e;--rule:#3a2f33}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#171114;--panel:#211a1d;--ink:#f4eaec;--mut:#b9a8ac;--acc:#d6405f;--ok:#2a9d5c;--el:#9b5659;--lk:#2a2225;--lki:#8f8286;--lkb:#4a3f42;--line:#a35a6e;--rule:#3a2f33}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cairo','Segoe UI',Tahoma,sans-serif;line-height:1.5}
+.page{max-width:1500px;margin:0 auto;padding:22px 16px 40px}
+h1{margin:0;font-size:clamp(24px,4vw,40px);font-weight:900;color:var(--acc);line-height:1.25}
+.sub{margin:6px 0 18px;color:var(--mut);font-size:15px;max-width:70ch}
+.top{display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-end;margin-bottom:14px}
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stat b{display:block;font-size:28px;font-weight:900;line-height:1.1}
+.stat span{font-size:13px;color:var(--mut)}
+.prog{flex:1 1 260px;min-width:220px}
+.track{height:12px;border-radius:6px;background:var(--lk);overflow:hidden}
+.fill{height:100%;width:0;background:var(--ok);transition:width .35s}
+.prog small{display:block;margin-top:4px;color:var(--mut);font-size:13px}
+.bar{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding:10px 0;border-block:1px solid var(--rule);margin-bottom:12px}
+.leg{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--mut);flex:1}
+.leg i{display:inline-block;width:14px;height:14px;border-radius:7px;vertical-align:-2px;margin-inline-end:6px}
+.n:focus-visible,#dl:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+#dl{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:14px;font-weight:700;padding:8px 16px;border-radius:10px;border:1.5px solid var(--lkb);background:var(--panel);color:var(--ink);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+#dl svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#dl:hover{border-color:var(--acc);color:var(--acc)}
+#msg{min-height:26px;margin:0 0 8px;font-weight:700;color:var(--acc);font-size:14px}
+#wrap{position:relative;margin:0 auto}
+#board{position:absolute;top:0;left:0;transform-origin:0 0;direction:ltr;background:var(--panel);border-radius:18px;border:1px solid var(--rule)}
+#lines{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.ed{fill:none;stroke:var(--line);stroke-width:1.8;stroke-linejoin:round;transition:opacity .2s}
+.ed.on{stroke:var(--ok)}
+.n{font:inherit;font-weight:700;font-size:12.5px;line-height:1.25;border:2px solid transparent;color:#fff;cursor:pointer;text-align:center;direction:rtl;transition:opacity .2s,transform .15s}
+#board .n{position:absolute;width:160px;height:40px;border-radius:20px;padding:2px 10px;display:flex;align-items:center;justify-content:center}
+.n[data-s="open"]{background:var(--acc)}
+.n[data-s="open"].e{background:var(--el)}
+.n[data-s="done"]{background:var(--ok)}
+.n[data-s="done"]::before{content:"✓";margin-inline-end:5px}
+.n[data-s="lock"]{background:var(--lk);color:var(--lki);border:1.5px dashed var(--lkb);cursor:not-allowed}
+.n:not([data-s="lock"]):hover{transform:translateY(-2px)}
+.sc{overflow-x:auto;padding-bottom:6px}
+.note{position:absolute;width:180px;text-align:center;font-size:12px;font-weight:700;color:var(--acc);line-height:1.25;direction:rtl}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>الخطة الشجرية لتخصص الأمن السيبراني</h1>
+<p class="sub">اضغط على كل مادة أنجزتها لتنفتح المواد التي تعتمد عليها.</p>
+<div class="top">
+<div class="stats">
+<div class="stat"><b id="sDone">0</b><span>مادة منجزة من 37</span></div>
+<div class="stat"><b id="sEl">0/3</b><span>اختيارية (9 ساعات)</span></div>
+<div class="stat"><b id="sOpen">0</b><span>متاحة الآن</span></div>
+</div>
+<div class="prog"><div class="track"><div class="fill" id="fill"></div></div><small id="pct">0% من الخطة</small></div>
+</div>
+<div class="bar">
+<div class="leg">
+<span><i style="background:var(--acc)"></i>متاحة</span>
+<span><i style="background:var(--ok)"></i>منجزة</span>
+<span><i style="background:var(--lk);border:1.5px dashed var(--lkb)"></i>مقفلة</span>
+<span><i style="background:var(--el)"></i>متطلب تخصص اختياري</span>
+</div>
+<button id="dl" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 18v2h16v-2"/></svg>تنزيل الخطة كصورة</button>
+</div>
+<p id="msg" aria-live="polite"></p>
+<div class="sc"><div id="wrap"><div id="board"></div></div></div>
+</div>
+<script>
+// الاسم، x، y، اختيارية؟ (الإحداثيات مأخوذة من الخطة الأصلية)
+const C={
+remedial:['حاسوب استدراكي',588,104],
+english:['اللغة الإنجليزية التقنية',838,105],
+math:['أسس الرياضيات',119,144],
+comp_math:['تطبيقات رياضيات محوسبة',299,144],
+it_fund:['أساسيات تكنولوجيا المعلومات',582,160],
+web1:['برمجة تطبيقات الإنترنت 1',1018,203],
+principles:['مبادئ الأمن السيبراني وأمن المعلومات',684,208],
+prog1:['البرمجة الحاسوبية',834,203],
+modern:['موضوعات حديثة في تكنولوجيا المعلومات',93,220],
+networks:['شبكات الحاسوب',325,213],
+os:['نظام التشغيل',253,277],
+netsec:['أمن الشبكات',445,280],
+sdlc:['دورة حياة تطوير البرمجيات',93,284],
+crypto:['نظرية التشفير',684,268],
+prog2:['البرمجة التطبيقية',842,265],
+web2:['برمجة تطبيقات الإنترنت 2',1018,259],
+swsec:['أمن البرمجيات',93,354],
+ossec:['أمن أنظمة التشغيل',253,334,1],
+integrity:['السلامة والمصادقة للبيانات',685,330],
+ds:['تراكيب البيانات والخوارزميات',839,328],
+linux:['أمن البنية التحتية باستخدام لينكس',988,334],
+dbsec:['قواعد البيانات وأمنها',1135,335],
+protocols:['بروتوكولات الاتصالات الآمنة',290,406],
+monitoring:['مراقبة الشبكات وتوثيقها',484,408],
+forensics:['تحقيقات الأدلة الرقمية',93,418],
+malware:['البرمجيات الخبيثة',685,389],
+analytics:['تحليلات البيانات',839,385],
+secprog:['البرمجة للأمن السيبراني',990,393],
+iot:['أمن إنترنت الأشياء',290,473,1],
+governance:['حوكمة الأمن السيبراني والامتثال للمخاطر',677,459,1],
+ai_sec:['الذكاء الاصطناعي في الأمن السيبراني',830,459,1],
+cloudsec:['أمن الحوسبة السحابية',1135,433,1],
+ethical:['القرصنة الأخلاقية',871,526],
+tools:['أدوات وتقنيات الأمن السيبراني',1077,526,1],
+soc:['مركز عمليات الأمن',871,599,1],
+discrete:['الرياضيات المتقطعة',99,537],
+entre:['الريادة وتخطيط المشاريع',449,537],
+camp:['مخيم الممارسات المهنية',449,610],
+topics1:['موضوعات مختارة في الأمن السيبراني 1',257,609,1],
+topics2:['موضوعات مختارة في الأمن السيبراني 2',257,679,1],
+hours90:['موافقة رئيس القسم واستكمال 90 ساعة',449,678],
+proj1:['مشروع تخرج 1',648,645],
+proj2:['مشروع تخرج 2',648,715],
+training:['التدريب الميداني',449,739]
+};
+// المادة ← المواد التي تفتحها
+const E={
+math:['comp_math'],it_fund:['modern','networks','principles','prog1'],english:['entre'],
+networks:['os','netsec'],os:['ossec'],netsec:['protocols','monitoring'],protocols:['iot'],
+modern:['sdlc'],sdlc:['swsec'],swsec:['forensics'],
+principles:['crypto'],crypto:['integrity'],integrity:['malware'],
+prog1:['web1','prog2'],web1:['web2'],prog2:['ds','linux','dbsec'],ds:['analytics'],
+analytics:['governance','ai_sec'],linux:['secprog'],dbsec:['cloudsec'],secprog:['ethical','tools'],ethical:['soc'],
+entre:['camp'],hours90:['camp','training','proj1','topics1'],topics1:['topics2'],proj1:['proj2']
+};
+const KX=1.15,KY=1.3,BW=1410,BH=900,EL=3,TOT=37;
+let W=150,H=40;
+const $=i=>document.getElementById(i);
+const P={},pos={};
+Object.keys(C).forEach(k=>{P[k]=[];pos[k]={x:C[k][1]*KX,y:C[k][2]*KY-100}});
+Object.entries(E).forEach(([s,ts])=>ts.forEach(t=>P[t].push(s)));
+let passed=new Set();
+const walk=(id,m,s=new Set())=>{(m[id]||[]).forEach(n=>{if(!s.has(n)){s.add(n);walk(n,m,s)}});return s};
+const stt=id=>passed.has(id)?'done':P[id].every(p=>passed.has(p))?'open':'lock';
+const say=t=>{$('msg').textContent=t};
+
+// مسارات خاصة تشبه الخطة الأصلية
+const bus1=t=>{const a=pos.it_fund,y=a.y+H/2+14;return [[a.x,a.y+H/2],[a.x,y],[pos[t].x,y],[pos[t].x,pos[t].y-H/2]]};
+const elbow=t=>[[pos.it_fund.x+W/2,pos.it_fund.y],[pos[t].x,pos.it_fund.y],[pos[t].x,pos[t].y-H/2]];
+const secbus=t=>{const y=pos.ethical.y-H/2-24;return [[pos.secprog.x,pos.secprog.y+H/2],[pos.secprog.x,y],[pos[t].x,y],[pos[t].x,pos[t].y-H/2]]};
+const nbus=t=>{const a=pos.netsec,y=pos.protocols.y-H/2-22;return [[a.x,a.y+H/2],[a.x,y],[pos[t].x,y],[pos[t].x,pos[t].y-H/2]]};
+const R={
+'remedial>math':()=>[[pos.remedial.x-W/2,pos.remedial.y],[pos.math.x,pos.remedial.y],[pos.math.x,pos.math.y-H/2]],
+'it_fund>modern':()=>bus1('modern'),
+'it_fund>networks':()=>bus1('networks'),
+'it_fund>principles':()=>elbow('principles'),
+'it_fund>prog1':()=>elbow('prog1'),
+'secprog>ethical':()=>secbus('ethical'),
+'secprog>tools':()=>secbus('tools'),
+'netsec>protocols':()=>nbus('protocols'),
+'netsec>monitoring':()=>nbus('monitoring')
+};
+const FV=['prog2>dbsec'];
+const HID=['english>entre'];
+function path(s,t){
+ const key=s+'>'+t;
+ if(R[key])return 'M'+R[key]().map(p=>p.join(' ')).join('L');
+ const a=pos[s],b=pos[t],dx=b.x-a.x,dy=b.y-a.y,adx=Math.abs(dx),ady=Math.abs(dy);
+ if(adx<40){
+  const lo=Math.min(a.y,b.y),hi=Math.max(a.y,b.y);
+  if(Object.keys(pos).some(k=>k!==s&&k!==t&&Math.abs(pos[k].x-a.x)<W/2&&pos[k].y>lo&&pos[k].y<hi)){
+   const sx=a.x+W/2,ex=b.x+W/2,o=sx+30;
+   return `M${sx} ${a.y}H${o}V${b.y}H${ex}`;
+  }
+ }
+ if(!FV.includes(key)&&(ady<20||(adx-W>=40&&adx>ady*1.2))){
+  const g=dx>0?1:-1,sx=a.x+g*W/2,ex=b.x-g*W/2,m=(sx+ex)/2;
+  return `M${sx} ${a.y}H${m}V${b.y}H${ex}`;
+ }
+ const g=dy>0?1:-1,sy=a.y+g*H/2,ey=b.y-g*H/2,m=sy+g*Math.min(22,Math.abs(ey-sy)/2),bx=adx<20?a.x:b.x;
+ return `M${a.x} ${sy}V${m}H${bx}V${ey}`;
+}
+
+// بناء الشجرة
+let h='',d='';
+Object.entries(E).forEach(([s,ts])=>ts.forEach(t=>{if(HID.includes(s+'>'+t))return;d+=`<path class="ed" data-s="${s}" data-t="${t}" d="${path(s,t)}"/>`}));
+[['remedial','math'],['remedial','it_fund'],['english','prog1']].forEach(([s,t])=>{d=`<path class="ed dc" data-s="${s}" data-t="${t}" d="${path(s,t)}"/>`+d});
+const NOTE=`<div class="note" style="left:${pos.entre.x-90}px;top:${pos.entre.y-H/2-36}px">يوجد لها متطلب سابق<br>(اللغة الإنجليزية التقنية)</div>`;
+const mk=(i,c)=>`<marker id="m${i}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(${c})"/></marker>`;
+Object.entries(C).forEach(([id,v])=>{h+=`<button class="n${v[3]?' e':''}" data-id="${id}" style="left:${pos[id].x-W/2}px;top:${pos[id].y-H/2}px">${v[0]}</button>`});
+$('board').style.width=BW+'px';$('board').style.height=BH+'px';
+$('board').innerHTML=`<svg id="lines" width="${BW}" height="${BH}"><defs>${mk(0,'--line')}${mk(1,'--ok')}</defs>${d}</svg>`+h+NOTE;
+
+function paint(){
+ let r=0,e=0,o=0;
+ document.querySelectorAll('.n').forEach(b=>{const s=stt(b.dataset.id);b.dataset.s=s;b.setAttribute('aria-pressed',s==='done')});
+ Object.keys(C).forEach(id=>{if(id==='hours90')return;if(passed.has(id))C[id][3]?e++:r++;else if(stt(id)==='open')o++});
+ const pc=Math.round((r+Math.min(e,EL))/TOT*100);
+ $('sDone').textContent=r+Math.min(e,EL);$('sEl').textContent=Math.min(e,EL)+'/'+EL;$('sOpen').textContent=o;
+ $('fill').style.width=pc+'%';$('pct').textContent=pc+'% من الخطة'+(pc===100?' — مبروك التخرج!':'');
+ document.querySelectorAll('.ed').forEach(p=>{const on=!p.classList.contains('dc')&&passed.has(p.dataset.s);p.classList.toggle('on',on);p.setAttribute('marker-end','url(#m'+(on?1:0)+')')});
+}
+function tap(id){
+ const s=stt(id);
+ if(s==='lock'){say('أنجز أولاً: '+P[id].filter(p=>!passed.has(p)).map(p=>C[p][0]).join('، '));return}
+ if(s==='done'){
+  const ds=[...walk(id,E)].filter(x=>passed.has(x));
+  passed.delete(id);ds.forEach(x=>passed.delete(x));
+  say(ds.length?'أُلغي إنجاز '+ds.length+' مادة تعتمد على هذه المادة.':'');
+ }else{passed.add(id);say('')}
+ paint();
+}
+document.querySelectorAll('.n').forEach(b=>{
+ b.onclick=()=>tap(b.dataset.id);
+});
+
+function fit(){
+ const k=Math.min(1.3,Math.max(.55,$('wrap').parentElement.clientWidth/BW));
+ $('wrap').style.width=BW*k+'px';$('wrap').style.height=BH*k+'px';
+ $('board').style.transform='scale('+k+')';
+}
+addEventListener('resize',fit);
+fit();
+paint();
+
+// تنزيل الخطة كصورة PNG تعكس تقدّمك الحالي (بدون أي مكتبات خارجية)
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+async function savePng(){
+ try{await document.fonts.ready}catch(e){}
+ const cs=getComputedStyle(document.documentElement),v=n=>cs.getPropertyValue(n).trim();
+ const S=3,PAD=30,TOP=72,BOT=60,KXe=1.35,We=180,BWe=1655,BHd=BH,OW=5250,OH=3508,Wd=OW/S,Ht=OH/S,k=Math.min((Wd-PAD*2)/BWe,(Ht-TOP-BOT)/BHd),ox=(Wd-BWe*k)/2,oy=TOP+(Ht-TOP-BOT-BHd*k)/2;
+ // تخطيط أعرض للصورة المصدّرة (نسبة قريبة من الخطة الأصلية)
+ const oW=W,oX={};Object.keys(C).forEach(k=>{oX[k]=pos[k].x;pos[k].x=C[k][1]*KXe});W=We;
+ const cv=document.createElement('canvas');cv.width=OW;cv.height=OH;
+ const c=cv.getContext('2d');c.scale(S,S);
+ const F="Cairo,'Segoe UI',Tahoma,sans-serif";
+ c.direction='rtl';c.textBaseline='middle';
+ c.fillStyle=v('--bg');c.fillRect(0,0,Wd,Ht);
+ c.textAlign='center';
+ c.fillStyle=v('--acc');c.font='900 34px '+F;c.fillText(document.querySelector('h1').textContent,Wd/2,38);
+ c.save();c.translate(ox,oy);c.scale(k,k);
+ rr(c,0,0,BWe,BH,18);c.fillStyle=v('--panel');c.fill();c.strokeStyle=v('--rule');c.lineWidth=1;c.stroke();
+ // الأسهم
+ c.lineWidth=1.8;c.lineJoin='round';c.lineCap='butt';
+ document.querySelectorAll('#lines .ed').forEach(p=>{
+  const t=path(p.dataset.s,p.dataset.t).match(/[MLHV]|-?\d*\.?\d+/g),pts=[];let x=0,y=0,i=0;
+  while(i<t.length){const k=t[i++];if(k==='M'||k==='L'){x=+t[i++];y=+t[i++]}else if(k==='H')x=+t[i++];else if(k==='V')y=+t[i++];pts.push([x,y])}
+  const col=p.classList.contains('on')?v('--ok'):v('--line');
+  const e=pts[pts.length-1];let q=pts[pts.length-2],j=pts.length-2;
+  while(j>0&&q[0]===e[0]&&q[1]===e[1]){q=pts[--j]}
+  const a=Math.atan2(e[1]-q[1],e[0]-q[0]);
+  c.strokeStyle=col;c.beginPath();pts.forEach((pt,n)=>{n?c.lineTo(pt[0]-(n===pts.length-1?Math.cos(a)*8:0),pt[1]-(n===pts.length-1?Math.sin(a)*8:0)):c.moveTo(pt[0],pt[1])});c.stroke();
+  c.fillStyle=col;c.beginPath();c.moveTo(e[0],e[1]);
+  c.lineTo(e[0]-Math.cos(a)*11+Math.sin(a)*5,e[1]-Math.sin(a)*11-Math.cos(a)*5);
+  c.lineTo(e[0]-Math.cos(a)*11-Math.sin(a)*5,e[1]-Math.sin(a)*11+Math.cos(a)*5);c.closePath();c.fill();
+ });
+ // المواد
+ c.font='700 14px '+F;c.textAlign='center';
+ document.querySelectorAll('#board .n').forEach(b=>{
+  const id=b.dataset.id,st=b.dataset.s,x=pos[id].x-W/2,y=pos[id].y-H/2;
+  rr(c,x,y,W,H,20);
+  c.fillStyle=st==='done'?v('--ok'):st==='lock'?v('--lk'):C[id][3]?v('--el'):v('--acc');c.fill();
+  if(st==='lock'){c.setLineDash([5,3]);c.strokeStyle=v('--lkb');c.lineWidth=1.5;c.stroke();c.setLineDash([])}
+  c.fillStyle=st==='lock'?v('--lki'):'#fff';
+  const words=((st==='done'?'✓ ':'')+C[id][0]).split(' ');let fs=14,lines;
+  for(;;){c.font='700 '+fs+'px '+F;lines=[];let cur='';
+   words.forEach(w=>{const t=cur?cur+' '+w:w;if(cur&&c.measureText(t).width>W-24){lines.push(cur);cur=w}else cur=t});lines.push(cur);
+   if(lines.length<=2||fs<=11)break;fs-=.5}
+  lines.forEach((l,n)=>c.fillText(l,x+W/2,y+H/2+(n-(lines.length-1)/2)*fs*1.2));
+ });
+ // ملاحظة المتطلب السابق للريادة
+ c.font='700 12px '+F;c.fillStyle=v('--acc');c.textAlign='center';
+ const ny=pos.entre.y-H/2-36;c.fillText('يوجد لها متطلب سابق',pos.entre.x,ny+8);c.fillText('(اللغة الإنجليزية التقنية)',pos.entre.x,ny+23);
+ c.restore();
+ // مفتاح الألوان
+ c.textAlign='right';c.font='700 14px '+F;let lx=ox+BWe*k;const ly=oy+BHd*k+30;
+ [['متاحة','--acc'],['منجزة','--ok'],['مقفلة','--lk'],['متطلب تخصص اختياري','--el']].forEach(([t,k])=>{
+  c.fillStyle=v(k);c.beginPath();c.arc(lx-7,ly,7,0,7);c.fill();
+  if(k==='--lk'){c.setLineDash([3,2]);c.strokeStyle=v('--lkb');c.lineWidth=1.5;c.stroke();c.setLineDash([])}
+  c.fillStyle=v('--mut');c.fillText(t,lx-20,ly);lx-=20+c.measureText(t).width+26;
+ });
+ W=oW;Object.keys(C).forEach(k=>{pos[k].x=oX[k]});
+ cv.toBlob(bl=>{const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='خطة_الأمن_السيبراني.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500)},'image/png');
+}
+$('dl').onclick=savePng;
+</script>
+</body>
+</html>
